@@ -6,9 +6,11 @@ import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './theme';
 
 import { Home } from './screens/Home';
+import { Status } from './screens/Status';
 import { useAppContext } from './contexts/appContext';
+import { RootStackParamList } from './types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const Routes: React.FC = () => {
   const { theme } = useAppContext();
@@ -29,18 +31,28 @@ const Routes: React.FC = () => {
   return (
     <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: getHeaderColors().background,
+            },
+            headerTitleStyle: {
+              color: getHeaderColors().text,
+            },
+          }}
+        >
           <Stack.Screen
             name="Home"
             component={Home}
             options={{
               title: 'Dandelion',
-              headerStyle: {
-                backgroundColor: getHeaderColors().background,
-              },
-              headerTitleStyle: {
-                color: getHeaderColors().text,
-              },
+            }}
+          />
+          <Stack.Screen
+            name="Status"
+            component={Status}
+            options={{
+              title: 'Status',
             }}
           />
         </Stack.Navigator>

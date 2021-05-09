@@ -41,7 +41,7 @@
     ],
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
-    "arrow-body-style": ["error", "always"],
+    "arrow-body-style": "off",
     "react/style-prop-object": [
       1,
       {

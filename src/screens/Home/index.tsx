@@ -2,10 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Button } from 'react-native';
 import { useAppContext } from '../../contexts/appContext';
-
+import { NavigationProps } from '../../types';
 import { Container, Title } from './styles';
 
-export const Home: React.FC = () => {
+interface HomeProps extends NavigationProps {}
+
+export const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { theme, setTheme } = useAppContext();
 
   return (
@@ -18,6 +20,11 @@ export const Home: React.FC = () => {
         onPress={() => {
           setTheme(theme === 'dark' ? 'light' : 'dark');
         }}
+      />
+
+      <Button
+        title="Go to Status"
+        onPress={() => navigation.navigate('Status')}
       />
     </Container>
   );
