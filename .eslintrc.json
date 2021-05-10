@@ -22,11 +22,15 @@
     },
     "import/resolver": {
       "typescript": {}
-    }
+    },
+    "import/core-modules": [
+      "@expo/vector-icons"
+    ]
   },
   "rules": {
     "import/no-unresolved": "error",
     "import/prefer-default-export": "off",
+    "import/no-duplicates": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -48,6 +52,8 @@
         "allow": ["StatusBar"]
       }
     ],
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"]
   }
 }

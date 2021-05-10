@@ -1,12 +1,14 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components/native';
 
 import { lightTheme, darkTheme } from './theme';
 
 import { Home } from './screens/Home';
-import { Status } from './screens/Status';
+import { SongRequest } from './screens/SongRequest';
+import { Settings } from './screens/Settings';
+import { MySongs } from './screens/MySongs';
 import { useAppContext } from './contexts/appContext';
 import { RootStackParamList } from './types';
 
@@ -23,7 +25,7 @@ const Routes: React.FC = () => {
       };
     }
     return {
-      background: '#f4f4f4',
+      background: '#FFF4F0',
       text: '#333',
     };
   };
@@ -36,8 +38,12 @@ const Routes: React.FC = () => {
             headerStyle: {
               backgroundColor: getHeaderColors().background,
             },
+            headerTintColor: getHeaderColors().text,
             headerTitleStyle: {
               color: getHeaderColors().text,
+            },
+            headerBackTitleStyle: {
+              backgroundColor: getHeaderColors().background,
             },
           }}
         >
@@ -49,10 +55,24 @@ const Routes: React.FC = () => {
             }}
           />
           <Stack.Screen
-            name="Status"
-            component={Status}
+            name="SongRequest"
+            component={SongRequest}
             options={{
-              title: 'Status',
+              title: 'SongRequest',
+            }}
+          />
+          <Stack.Screen
+            name="MySongs"
+            component={MySongs}
+            options={{
+              title: 'Meus pedidos',
+            }}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={Settings}
+            options={{
+              title: 'Settings',
             }}
           />
         </Stack.Navigator>
