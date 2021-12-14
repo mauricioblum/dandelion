@@ -18,6 +18,7 @@ export const Home: React.FC<HomeProps> = ({ navigation }) => {
   const [user, loadingAuth] = useAuthState(firebase.auth());
 
   const [value, loading] = useObjectVal(firebase.database().ref('currentSong'));
+  console.log('🚀 ~ value', value);
 
   const login = async () => {
     try {
