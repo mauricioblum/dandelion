@@ -15,6 +15,8 @@ interface HomeProps extends NavigationProps {}
 export const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { theme } = useAppContext();
 
+  const iconColor = theme === 'dark' ? '#fff' : '#000';
+
   const [user, loadingAuth] = useAuthState(firebase.auth());
 
   const [value, loading] = useObjectVal(firebase.database().ref('currentSong'));
@@ -45,7 +47,7 @@ export const Home: React.FC<HomeProps> = ({ navigation }) => {
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
       <SettingsView>
         <Pressable onPress={() => navigation.navigate('Settings')}>
-          <Feather name="settings" size={28} />
+          <Feather color={iconColor} name="settings" size={28} />
         </Pressable>
       </SettingsView>
       <Title

@@ -11,6 +11,7 @@ import { Settings } from './screens/Settings';
 import { MySongs } from './screens/MySongs';
 import { useAppContext } from './contexts/appContext';
 import { RootStackParamList } from './types';
+import DJScreen from './screens/DJScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -73,6 +74,13 @@ const Routes: React.FC = () => {
             component={Settings}
             options={{
               title: 'Settings',
+            }}
+          />
+          <Stack.Screen
+            name="DJScreen"
+            component={DJScreen}
+            options={{
+              title: 'DJ Menu',
             }}
           />
         </Stack.Navigator>

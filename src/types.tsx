@@ -5,6 +5,7 @@ export type RootStackParamList = {
   SongRequest: undefined;
   Settings: undefined;
   MySongs: undefined;
+  DJScreen: undefined;
 };
 
 export type NavigationProps = StackScreenProps<RootStackParamList, 'Home'>;
