@@ -6,6 +6,13 @@ export const SongWrapper = styled.View`
   align-items: center;
   justify-content: space-between;
   min-width: 250px;
+  width: 100%;
+  overflow: hidden;
+  padding: 12px 8px;
+  border: 1px solid ${(props) => props.theme.colors.main};
+  border-radius: 6px;
+  margin-bottom: 6px;
+  background: #fff;
 `;
 
 export const SongTitle = styled.Text`
@@ -13,4 +20,5 @@ export const SongTitle = styled.Text`
   font-weight: bold;
   color: ${(props) => props.theme.colors.main};
   margin-right: 16px;
+  max-width: 85%;
 `;

@@ -1,23 +1,29 @@
+import { FontAwesome } from '@expo/vector-icons';
+import * as Linking from 'expo-linking';
 import firebase from 'firebase/app';
-import React, { useState, useEffect } from 'react';
-import { useListVals, useObjectVal } from 'react-firebase-hooks/database';
-import { Feather } from '@expo/vector-icons';
-
-import { Alert, Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useListVals } from 'react-firebase-hooks/database';
+import { FlatList, Platform, Pressable } from 'react-native';
 import { Button } from '../../components/Button';
-import { Song } from '../../types';
+import { alertMessage } from '../../services/alertService';
+import { NavigationProps, Song } from '../../types';
 import { Input } from '../SongRequest/styles';
-
-import { Container, Label, SongTitle, SongWrapper } from './styles';
-import { useAppContext } from '../../contexts/appContext';
+import {
+  ActionsView,
+  Container,
+  Label,
+  SongTitle,
+  SongWrapper,
+} from './styles';
 
 const DJLoginPassword = '@fm18122021';
 
-const DJScreen: React.FC = () => {
+interface DJScreenProps extends NavigationProps {}
+
+const DJScreen: React.FC<DJScreenProps> = ({ navigation }) => {
   const [songs] = useListVals<Song>(firebase.database().ref('requests'), {
     keyField: 'songId',
   });
-  const { theme } = useAppContext();
 
   const [input, setInput] = useState('');
   const [authorized, setAuthorized] = useState(false);
@@ -39,7 +45,7 @@ const DJScreen: React.FC = () => {
 
   useEffect(() => {
     if (error) {
-      Alert.alert(
+      alertMessage(
         'Senha incorreta',
         'Tente novamente',
         [
@@ -55,7 +61,36 @@ const DJScreen: React.FC = () => {
     }
   }, [error]);
 
-  const iconColor = theme === 'dark' ? '#fff' : '#000';
+  const handlePlaySong = (song: Song) => {
+    const requestsRef = firebase.database().ref(`requests`);
+    const currentSongRef = firebase.database().ref(`currentSong`);
+
+    currentSongRef.set(`${song.name} - ${song.artist}`, (currSongError) => {
+      if (currSongError) {
+        alertMessage('Erro ao tocar música atual, tente novamente');
+      } else {
+        requestsRef.child(song.songId).remove();
+      }
+    });
+  };
+
+  const handleRemoveSong = (song: Song) => {
+    const requestsRef = firebase.database().ref(`requests`);
+
+    requestsRef.child(song.songId).remove();
+  };
+
+  const handleSearchSong = (song: Song) => {
+    const url = `https://open.spotify.com/search/${encodeURI(
+      `${song.name} ${song.artist}`,
+    )}`;
+    if (Platform.OS === 'web') {
+      // eslint-disable-next-line no-undef
+      window.open(url, 'spotifywindow');
+    } else {
+      Linking.openURL(url);
+    }
+  };
 
   return (
     <Container>
@@ -66,22 +101,46 @@ const DJScreen: React.FC = () => {
             Clique no Play para mostrar o pedido no painel, ou no X para remover
           </Label>
 
-          {songs?.map((song) => (
-            <SongWrapper key={song.songId}>
-              <SongTitle>
-                {song.name} - {song.artist}
-              </SongTitle>
-              <Pressable onPress={() => console.log('Make this playable')}>
-                <Feather color={iconColor} name="play" size={20} />
-              </Pressable>
-              <Pressable onPress={() => {}}>
-                <Feather color={iconColor} name="delete" size={20} />
-              </Pressable>
-            </SongWrapper>
-          ))}
-          {songs?.length === 0 && (
-            <SongTitle>Nenhum pedido registrado.</SongTitle>
-          )}
+          <FlatList
+            data={songs}
+            style={{ marginTop: 20, width: '100%' }}
+            ListEmptyComponent={
+              <SongTitle>Nenhum pedido registrado.</SongTitle>
+            }
+            keyExtractor={(song) => song.songId}
+            renderItem={({ item: song }) => (
+              <SongWrapper>
+                <SongTitle>
+                  {song.name} - {song.artist}
+                </SongTitle>
+                <ActionsView>
+                  <Pressable
+                    style={{ marginRight: 14 }}
+                    onPress={() => handlePlaySong(song)}
+                  >
+                    <FontAwesome color="#b305ca" name="play-circle" size={40} />
+                  </Pressable>
+                  <Pressable
+                    style={{ marginRight: 14 }}
+                    onPress={() => handleSearchSong(song)}
+                  >
+                    <FontAwesome color="#057738" name="spotify" size={40} />
+                  </Pressable>
+                  <Pressable onPress={() => handleRemoveSong(song)}>
+                    <FontAwesome color="#b90505" name="trash" size={40} />
+                  </Pressable>
+                </ActionsView>
+              </SongWrapper>
+            )}
+          />
+
+          <Button
+            title="Sair"
+            marginVertical={4}
+            onPress={() => {
+              navigation.navigate('Home');
+            }}
+          />
         </>
       ) : (
         <>

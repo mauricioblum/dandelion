@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, FlatList } from 'react-native';
 import firebase from 'firebase/app';
 import { useListVals } from 'react-firebase-hooks/database';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -31,19 +31,24 @@ export const MySongs: React.FC = () => {
 
   return (
     <Container>
-      {userSongs?.map((song) => (
-        <SongWrapper key={song.songId}>
-          <SongTitle>
-            {song.name} - {song.artist}
-          </SongTitle>
-          <Pressable onPress={() => handleDeleteSong(song.songId)}>
-            <Feather name="trash-2" size={20} />
-          </Pressable>
-        </SongWrapper>
-      ))}
-      {userSongs.length === 0 && (
-        <SongTitle>Você ainda não fez nenhum pedido.</SongTitle>
-      )}
+      <FlatList
+        data={userSongs}
+        keyExtractor={(song) => song.songId}
+        style={{ marginTop: 10, width: '100%' }}
+        ListEmptyComponent={
+          <SongTitle>Você ainda não fez nenhum pedido.</SongTitle>
+        }
+        renderItem={({ item: song }) => (
+          <SongWrapper>
+            <SongTitle>
+              {song.name} - {song.artist}
+            </SongTitle>
+            <Pressable onPress={() => handleDeleteSong(song.songId)}>
+              <Feather name="trash-2" size={20} />
+            </Pressable>
+          </SongWrapper>
+        )}
+      />
     </Container>
   );
 };

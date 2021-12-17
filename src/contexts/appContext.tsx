@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
-import { useColorScheme } from 'react-native';
 
 export type Theme = 'light' | 'dark';
 export interface AppContextProps {
@@ -16,9 +15,7 @@ export const useAppContext = () => {
 };
 
 const AppProvider: React.FC = ({ children, ...rest }) => {
-  const colorScheme = useColorScheme();
-
-  const [mode, setMode] = React.useState<Theme>(colorScheme as Theme);
+  const [mode, setMode] = React.useState<Theme>('light');
 
   const setTheme = (theme: Theme) => {
     setMode(theme);

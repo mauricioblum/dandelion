@@ -13,10 +13,19 @@ const firebaseConfig = {
   measurementId: 'G-TN20P7GL0L',
 };
 
+const login = async () => {
+  try {
+    await firebase.auth().signInAnonymously();
+  } catch (err) {
+    console.log('err');
+  }
+};
+
 export function initFirebase() {
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   } else {
     firebase.app();
   }
+  login();
 }

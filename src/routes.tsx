@@ -52,14 +52,14 @@ const Routes: React.FC = () => {
             name="Home"
             component={Home}
             options={{
-              title: 'Dandelion',
+              title: 'Casamento Maurício e Flávia',
             }}
           />
           <Stack.Screen
             name="SongRequest"
             component={SongRequest}
             options={{
-              title: 'SongRequest',
+              title: 'Pedir Música',
             }}
           />
           <Stack.Screen
@@ -73,7 +73,7 @@ const Routes: React.FC = () => {
             name="Settings"
             component={Settings}
             options={{
-              title: 'Settings',
+              title: 'Configurações',
             }}
           />
           <Stack.Screen

@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { Alert } from 'react-native';
 import firebase from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Container } from '../../theme/components';
 import { Button } from '../../components/Button';
 import { Form, Label, Input } from './styles';
+import { alertMessage } from '../../services/alertService';
 
 export const SongRequest: React.FC = () => {
   const [name, setName] = useState('');
@@ -14,12 +14,12 @@ export const SongRequest: React.FC = () => {
 
   const handleRequestSong = () => {
     if (name === '') {
-      Alert.alert('Escreva pelo menos o nome da música!!!');
+      alertMessage('Escreva pelo menos o nome da música!!!');
       return;
     }
 
     if (!user) {
-      Alert.alert('Usuário não autenticado!');
+      alertMessage('Usuário não autenticado!');
       return;
     }
 
@@ -34,11 +34,11 @@ export const SongRequest: React.FC = () => {
 
     requestsRef.push(song, (error) => {
       if (error) {
-        Alert.alert('Erro ao salvar seu pedido, tente novamente');
+        alertMessage('Erro ao salvar seu pedido, tente novamente');
       } else {
         setName('');
         setArtist('');
-        Alert.alert(
+        alertMessage(
           'Pedido efetuado com sucesso',
           'O DJ já recebeu o seu pedido',
           [

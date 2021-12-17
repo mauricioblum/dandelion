@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from 'react';
-import { ActivityIndicator, Pressable } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, Pressable, Image } from 'react-native';
 import firebase from 'firebase/app';
 import { useObjectVal } from 'react-firebase-hooks/database';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -8,7 +8,8 @@ import { Feather } from '@expo/vector-icons';
 import { Button } from '../../components/Button';
 import { useAppContext } from '../../contexts/appContext';
 import { NavigationProps } from '../../types';
-import { Container, Title, SettingsView, SongLabel, SongCopy } from './styles';
+import { Container, SettingsView, SongLabel, SongCopy } from './styles';
+import monogram from '../../../assets/monograma-logo.png';
 
 interface HomeProps extends NavigationProps {}
 
@@ -17,30 +18,13 @@ export const Home: React.FC<HomeProps> = ({ navigation }) => {
 
   const iconColor = theme === 'dark' ? '#fff' : '#000';
 
-  const [user, loadingAuth] = useAuthState(firebase.auth());
+  const [user] = useAuthState(firebase.auth());
 
   const [value, loading] = useObjectVal(firebase.database().ref('currentSong'));
-  console.log('🚀 ~ value', value);
 
-  const login = async () => {
-    try {
-      await firebase.auth().signInAnonymously();
-    } catch (err) {
-      console.log('err');
-    }
-  };
-
-  const logout = () => {
-    firebase.auth().signOut();
-  };
-
-  useEffect(() => {
-    if (!user) {
-      login();
-    } else {
-      console.log('User is authenticated', user);
-    }
-  }, [user, login]);
+  if (!user) {
+    return null;
+  }
 
   return (
     <Container>
@@ -50,21 +34,15 @@ export const Home: React.FC<HomeProps> = ({ navigation }) => {
           <Feather color={iconColor} name="settings" size={28} />
         </Pressable>
       </SettingsView>
-      <Title
-        style={{
-          marginBottom: 48,
-        }}
-      >
-        Dandelion
-      </Title>
+      <Image source={monogram} style={{ width: 200, height: 200 }} />
       <SongLabel>Tocando agora:</SongLabel>
       {loading ? (
         <ActivityIndicator
           style={{
             marginBottom: 48,
           }}
-          size="small"
-          color="#9F4D5D"
+          size="large"
+          color="#4F6758"
         />
       ) : (
         <SongCopy

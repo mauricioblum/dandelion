@@ -15,10 +15,11 @@ export const Title = styled.Text`
 export const SongLabel = styled.Text`
   font-size: 18px;
   color: ${(props) => props.theme.colors.text};
+  margin-top: 10px;
 `;
 
 export const SongCopy = styled.Text`
-  font-size: 18px;
+  font-size: 28px;
   font-weight: bold;
   color: ${(props) => props.theme.colors.main};
 `;
